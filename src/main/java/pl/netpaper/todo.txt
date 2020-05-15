@@ -1,0 +1,19 @@
+//JsonInclude(JsonInclude.Include.NON_NULL) - adnotacja która sprawia że jeżeli coś jest nullem to nie trafia do JSONa
+//EntityListners(AuditingEntityListners.class) włacza adnotacje sprawdzajace np utworzenie obiektu i modyfikacje
+//EnableJpaAuditing - Włącza auditing na klasach DAO
+//RequiredArgsConstructor tworzy konstruktor dla pol finalnych
+//Pageable - pozwala ustawic ilosc produktow oraz stron
+//Hazelcast - cashe
+//CachePut - pozwala dodac cache
+//Cacheable - zwraca gdy cache nieistnieje
+//CacheEvict - usuwa cache
+
+//@Bean //tworzy konfig dla cache o nazwie product
+//    public Config config() {
+//        return new Config().setInstanceName("hazelcast-instance1").addMapConfig(new MapConfig().setName("product"));
+//    }
+
+//Configuration
+Stream - sluzy do przetwarzania danych, przetwarza element dopiero po wukonaniu metody konczacej
+przeslanianie - mamy doczynienia podczas rozszerzania klasy przez klase  a dokladnie wtedy kiedy chcemy przesłonic impl klasy rodzica wlasna.
+watek - czesc programu wykonania wspolbieznie w obrebie jednego procesu proces moze miec we
