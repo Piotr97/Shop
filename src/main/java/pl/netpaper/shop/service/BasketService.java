@@ -6,9 +6,9 @@ import pl.netpaper.shop.model.elastic.Basket;
 
 public interface BasketService {
 
-    void save(Product product, Long userId);
+    void save(Product product);
 
-    Basket showBasket(Long userId);
+    Basket showBasket();
 
-    void delete(Long productId, Long userId);
+    void delete(Long productId);
 }

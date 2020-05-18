@@ -1,6 +1,7 @@
 package pl.netpaper.shop.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import pl.netpaper.shop.model.dao.Product;
 import pl.netpaper.shop.model.dao.User;
@@ -25,11 +26,12 @@ public class BasketServiceImpl implements BasketService {
     private final UserRepository userRepository;
 
     @Override
-    public void save(Product product, Long userId) {
+    public void save(Product product) {
         Basket basket = new Basket();
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
         Optional<Product> optionalProduct = productRepository.findById(product.getId());
-        Optional<User> optionalUser = userRepository.findById(userId);
-        Optional<Basket> optionalBasket = basketRepository.findByUserId(userId);
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        Optional<Basket> optionalBasket = basketRepository.findByUserEmail(email);
         if (optionalProduct.isPresent() && optionalUser.isPresent()) {
             Product productDb = optionalProduct.get();
             ProductBasket productBasket = new ProductBasket();
@@ -46,7 +48,7 @@ public class BasketServiceImpl implements BasketService {
                 basket.getProducts().removeIf(pDb -> pDb.getId().equals(product.getId()));
                 basket.getProducts().add(productBasket);
             } else {
-                basket.setUserId(userId);
+                basket.setUserEmail(email);
                 List<ProductBasket> productBasketsList = new ArrayList<>();
                 basket.setProducts(productBasketsList);
             }
@@ -59,14 +61,18 @@ public class BasketServiceImpl implements BasketService {
     //todo przetestowac metode czy dziala
 
     @Override
-    public Basket showBasket(Long userId) {
-        return basketRepository.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("basket doesen't exist"));
+    public Basket showBasket() {
+        return basketRepository.findByUserEmail(SecurityContextHolder.getContext().getAuthentication().getName())
+                .orElseThrow(() -> new RuntimeException("basket doesn't exist"));
     }
 
     @Override
-    public void delete(Long productId, Long userId) {
-        //  basketRepository.deleteByUserIdAndProductId(productId, userId);
+    public void delete(Long productId) {
+        Optional<Basket> optionalBasket = basketRepository.findByUserEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        optionalBasket.ifPresent(basket -> {
+            basket.getProducts().removeIf(productBasket -> productBasket.getId().equals(productId));
+            basketRepository.save(basket);
+        });
     }
 }
 

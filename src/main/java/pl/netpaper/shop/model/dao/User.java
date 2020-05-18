@@ -30,7 +30,7 @@ public class User {
     @LastModifiedDate // ustawiają daty objektu ostatniej mod obj
     private LocalDateTime lastModifyDate;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
 }

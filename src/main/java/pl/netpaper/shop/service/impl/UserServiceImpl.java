@@ -3,6 +3,7 @@ package pl.netpaper.shop.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.netpaper.shop.model.dao.User;
 import pl.netpaper.shop.repository.RoleRepository;
@@ -18,10 +19,12 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public User save(User user) {
-        roleRepository.findByName("ROLE_USER").ifPresent(role -> user.setRoles(Collections.singleton(role))); // tworzy set z jednym elementem
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        roleRepository.findByName("ROLE_USER").ifPresent(role -> user.setRoles(Collections.singleton(role)));// tworzy set z jednym elementem
         return userRepository.save(user);
     }
 

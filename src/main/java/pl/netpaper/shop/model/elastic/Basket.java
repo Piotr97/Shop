@@ -19,7 +19,7 @@ import java.util.List;
 public class Basket {
     @Id
     private String id;
-    private Long userId;
+    private String userEmail;
     private List<ProductBasket> products;
 
 }

@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import pl.netpaper.shop.auth.JwtAuthenticationFilter;
+import pl.netpaper.shop.auth.JwtAuthorizationFilter;
 
 @Configuration
 @RequiredArgsConstructor
@@ -22,10 +24,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-       http.csrf().ignoringAntMatchers("/**")
-               .and()
-               .sessionManagement()
-               .sessionCreationPolicy(SessionCreationPolicy.STATELESS); // nie przechowuje stanu w aplikacji
+        http.csrf().ignoringAntMatchers("/**")
+                .and()
+                .cors()
+                .and()
+                .addFilter(new JwtAuthenticationFilter(authenticationManager()))
+                .addFilter(new JwtAuthorizationFilter(authenticationManager()))
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS); // nie przechowuje stanu w aplikacji
     }
 
     @Override
