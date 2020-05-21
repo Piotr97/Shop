@@ -24,7 +24,7 @@ public class UserController {
         return userMapper.userToUserDto(save);
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasRole('ADMIN') || @securityServiceImpl.hasAccessToUser(#id)") // nazwa beana z malej litery, # - zwracanie się do parametru funkcji
     @GetMapping("/{id}")
     public UserDto findUserById(@PathVariable Long id) {
         User userById = userService.findById(id);
