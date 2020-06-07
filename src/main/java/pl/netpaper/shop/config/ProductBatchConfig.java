@@ -11,9 +11,9 @@ import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 import pl.netpaper.shop.model.csv.ProductCsv;
 import pl.netpaper.shop.model.dao.Product;
-import pl.netpaper.shop.procesor.ProductProcessor;
-import pl.netpaper.shop.procesor.ProductReader;
-import pl.netpaper.shop.procesor.ProductWriter;
+import pl.netpaper.shop.procesor.imports.ProductProcessor;
+import pl.netpaper.shop.procesor.imports.ProductReader;
+import pl.netpaper.shop.procesor.imports.ProductWriter;
 
 @Configuration
 @RequiredArgsConstructor
